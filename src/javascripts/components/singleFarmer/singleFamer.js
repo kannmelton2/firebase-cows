@@ -1,11 +1,11 @@
-import farmerData from '../../helpers/data/farmerData';
+import smash from '../../helpers/data/smash';
 import utils from '../../helpers/utils';
 
 const buildFarmer = (e) => {
   const farmerId = e.target.closest('.card').id;
-  farmerData.getFarmerbyId(farmerId)
-    .then((response) => {
-      const singleFarmer = response.data;
+  smash.getSingleFarmerWithCows(farmerId)
+    .then((singleFarmer) => {
+      console.error('single farmer', singleFarmer);
       let domString = '';
       domString += '<h2 class="text-center">Featured Farmer</h2>';
       domString += '<div class="col-12">';
