@@ -5,15 +5,16 @@ const buildFarmer = (e) => {
   const farmerId = e.target.closest('.card').id;
   smash.getSingleFarmerWithCows(farmerId)
     .then((singleFarmer) => {
-      console.error('single farmer', singleFarmer);
       let domString = '';
       domString += '<h2 class="text-center">Featured Farmer</h2>';
       domString += '<div class="col-12">';
       domString += '<div class="card text-white bg-dark">';
       domString += `<div class="card-header">Farmer ${singleFarmer.name} (Age: ${singleFarmer.age})</div>`;
       domString += '<div class="card-body">';
-      domString += '<h5 class="card-title">Cows Owned: </h5>';
-      domString += '<p class="card-text"></p>';
+      domString += '<h5 class="card-title">Cow(s) Owned:</h5>';
+      singleFarmer.cows.forEach((cow) => {
+        domString += `<p class="card-text">${cow.name} (${cow.location})</p>`;
+      });
       domString += '</div>';
       domString += '</div>';
 
