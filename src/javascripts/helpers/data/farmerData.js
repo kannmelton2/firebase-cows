@@ -17,6 +17,6 @@ const getFarmers = () => new Promise((resolve, reject) => {
     .catch((err) => reject(err));
 });
 
-const getFarmerbyId = (farmerId) => axios.get(`${baseUrl}/farmers/${farmerId}.json`);
+const getFarmerById = (farmerId) => axios.get(`${baseUrl}/farmers/${farmerId}.json`);
 
-export default { getFarmers, getFarmerbyId };
+export default { getFarmers, getFarmerById };
