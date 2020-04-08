@@ -4,6 +4,7 @@ import newCow from '../newCow/newCow';
 
 import utils from '../../helpers/utils';
 import smash from '../../helpers/data/smash';
+import farmerCowData from '../../helpers/data/farmerCowData';
 
 const removeCow = (e) => {
   const cowId = e.target.closest('.card').id;
@@ -26,8 +27,6 @@ const makeACow = (e) => {
     weight: $('#cow-weight').val() * 1,
   };
   console.error('newCow', addNewCow);
-  // make a new cow object
-  // save to firebase
   cowData.addCow(addNewCow)
     .then(() => {
       // eslint-disable-next-line no-use-before-define
@@ -35,11 +34,37 @@ const makeACow = (e) => {
       utils.printToDom('new-cow', '');
     })
     .catch((err) => console.error('add cow failed', err));
-  // reprint cows
+};
+
+const farmerCowController = (e) => {
+  e.preventDefault();
+  if (e.target.checked) {
+    // create a new farmerCow
+    const newFarmerCow = {
+      cowId: e.target.closest('.card').id,
+      farmerUid: e.target.dataset.farmerUid,
+    };
+    farmerCowData.addFarmerCow(newFarmerCow)
+      .then(() => {
+        // eslint-disable-next-line no-use-before-define
+        buildCows();
+        utils.printToDom('single-farmer', '');
+      })
+      .catch((err) => console.error('could not create farmer cow', err));
+  } else {
+    const farmerCowId = e.target.id;
+    farmerCowData.deleteFarmerCow(farmerCowId)
+      .then(() => {
+        // eslint-disable-next-line no-use-before-define
+        buildCows();
+        utils.printToDom('single-farmer', '');
+      })
+      .catch((err) => console.error('could not delete farmer cow', err));
+  }
 };
 
 const buildCows = () => {
-  cowData.getCows()
+  smash.getCowsWithOwners()
     .then((cows) => {
       let domString = '';
       domString += '<h2 class="text-center">Pasture</h2>';
@@ -50,11 +75,15 @@ const buildCows = () => {
       });
       domString += '</div>';
       utils.printToDom('pasture', domString);
-      $('body').on('click', '.delete-cow', removeCow);
-      $('body').on('click', '#add-new-cow', newCow.showForm);
-      $('body').on('click', '#cow-creator', makeACow);
     })
     .catch((err) => console.error('get cows broke', err));
 };
 
-export default { buildCows };
+const pastureEvents = () => {
+  $('body').on('click', '.delete-cow', removeCow);
+  $('body').on('click', '#add-new-cow', newCow.showForm);
+  $('body').on('click', '#cow-creator', makeACow);
+  $('body').on('click', '.farmer-cow-checkbox', farmerCowController);
+};
+
+export default { buildCows, pastureEvents };

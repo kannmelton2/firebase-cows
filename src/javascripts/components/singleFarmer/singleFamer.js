@@ -17,7 +17,7 @@ const buildFarmer = (e) => {
       });
       domString += '</div>';
       domString += '</div>';
-
+      utils.printToDom('new-cow', '');
       utils.printToDom('single-farmer', domString);
     })
     .catch((err) => console.error('problem with single farmer', err));

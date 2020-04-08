@@ -22,6 +22,7 @@ const showForm = () => {
   domString += '</div>';
   domString += '<button type="submit" id="cow-creator" class="btn btn-dark">Add Cow</button>';
   domString += '</form>';
+  utils.printToDom('single-farmer', '');
   utils.printToDom('new-cow', domString);
 };
 
