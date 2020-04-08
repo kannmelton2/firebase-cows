@@ -26,8 +26,6 @@ const makeACow = (e) => {
     weight: $('#cow-weight').val() * 1,
   };
   console.error('newCow', addNewCow);
-  // make a new cow object
-  // save to firebase
   cowData.addCow(addNewCow)
     .then(() => {
       // eslint-disable-next-line no-use-before-define
@@ -35,11 +33,10 @@ const makeACow = (e) => {
       utils.printToDom('new-cow', '');
     })
     .catch((err) => console.error('add cow failed', err));
-  // reprint cows
 };
 
 const buildCows = () => {
-  cowData.getCows()
+  smash.getCowsWithOwners()
     .then((cows) => {
       let domString = '';
       domString += '<h2 class="text-center">Pasture</h2>';

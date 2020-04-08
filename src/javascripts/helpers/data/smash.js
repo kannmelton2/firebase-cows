@@ -35,4 +35,30 @@ const completelyRemoveCow = (cowId) => new Promise((resolve, reject) => {
     .catch((err) => reject(err));
 });
 
-export default { getSingleFarmerWithCows, completelyRemoveCow };
+// in smash function - call getFarmerCows, getAllFarmers
+// array of farmers, each farmer should have a boolean isChecked (true if that farmer owns the cow)
+const getCowsWithOwners = () => new Promise((resolve, reject) => {
+  cowData.getCows()
+    .then((cowResponse) => {
+      farmerData.getFarmers().then((farmerResponse) => {
+        farmerCowData.getFarmerCows().then((farmerCowResponse) => {
+          const finalCows = [];
+          cowResponse.forEach((oneCow) => {
+            const cow = { farmers: [], ...oneCow };
+            const farmerCowOwners = farmerCowResponse.filter((x) => x.cowId === cow.id);
+            farmerResponse.forEach((oneFarmer) => {
+              const farmer = { ...oneFarmer };
+              const isOwner = farmerCowOwners.find((x) => x.farmerUid === farmer.uid);
+              farmer.isChecked = isOwner !== undefined;
+              cow.farmers.push(farmer);
+            });
+            finalCows.push(cow);
+          });
+          console.error('finalCows', finalCows);
+          resolve(finalCows);
+        });
+      });
+    })
+    .catch((err) => reject(err));
+});
+export default { getSingleFarmerWithCows, completelyRemoveCow, getCowsWithOwners };
