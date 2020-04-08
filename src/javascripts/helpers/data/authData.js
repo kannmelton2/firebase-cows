@@ -22,6 +22,7 @@ const checkLoginStatus = () => {
       newCowDiv.removeClass('hide');
       logoutButton.removeClass('hide');
       pasture.buildCows();
+      pasture.pastureEvents();
       farmhouse.buildFarmhouse();
     } else {
       // person is not logged in

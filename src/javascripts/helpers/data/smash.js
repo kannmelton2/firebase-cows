@@ -50,11 +50,11 @@ const getCowsWithOwners = () => new Promise((resolve, reject) => {
               const farmer = { ...oneFarmer };
               const isOwner = farmerCowOwners.find((x) => x.farmerUid === farmer.uid);
               farmer.isChecked = isOwner !== undefined;
+              farmer.farmerCowId = isOwner ? isOwner.id : `nope-${cow.id}-${farmer.id}`;
               cow.farmers.push(farmer);
             });
             finalCows.push(cow);
           });
-          console.error('finalCows', finalCows);
           resolve(finalCows);
         });
       });
