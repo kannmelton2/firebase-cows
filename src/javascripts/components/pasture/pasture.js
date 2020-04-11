@@ -21,7 +21,8 @@ const removeCow = (e) => {
 
 const editCowEvent = (e) => {
   e.preventDefault();
-  editCow.showForm();
+  const cowId = e.target.closest('.card').id;
+  editCow.showForm(cowId);
 };
 
 const makeACow = (e) => {
@@ -40,6 +41,24 @@ const makeACow = (e) => {
       utils.printToDom('new-cow', '');
     })
     .catch((err) => console.error('add cow failed', err));
+};
+
+const modifyCow = (e) => {
+  e.preventDefault();
+  const cowId = e.target.closest('.edit-cow-form-tag').id;
+  const modifiedCow = {
+    name: $('#edit-cow-name').val(),
+    breed: $('#edit-cow-breed').val(),
+    location: $('#edit-cow-location').val(),
+    weight: $('#edit-cow-weight').val() * 1,
+  };
+  cowData.updateCow(cowId, modifiedCow)
+    .then(() => {
+      // eslint-disable-next-line no-use-before-define
+      buildCows();
+      utils.printToDom('edit cow', '');
+    })
+    .catch((err) => console.error('could not update cow', err));
 };
 
 const farmerCowController = (e) => {
@@ -88,6 +107,7 @@ const buildCows = () => {
 const pastureEvents = () => {
   $('body').on('click', '.delete-cow', removeCow);
   $('body').on('click', '.edit-cow', editCowEvent);
+  $('body').on('click', '#cow-modifier', modifyCow);
   $('body').on('click', '#add-new-cow', newCow.showForm);
   $('body').on('click', '#cow-creator', makeACow);
   $('body').on('click', '.farmer-cow-checkbox', farmerCowController);
